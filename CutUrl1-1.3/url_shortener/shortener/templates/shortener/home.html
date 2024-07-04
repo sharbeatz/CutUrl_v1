@@ -1,0 +1,29 @@
+{% extends "shortener/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>Сократите свой URL-адрес</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="url" name="original_url" class="form-control" required id="id_original_url" placeholder="https://example.com" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Сократить ссылку</button>
+                    </form>
+                    {% if short_code %}
+                    <div class="alert alert-success mt-3" role="alert">
+                        Короткий код: <strong>{{ short_code }}</strong>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

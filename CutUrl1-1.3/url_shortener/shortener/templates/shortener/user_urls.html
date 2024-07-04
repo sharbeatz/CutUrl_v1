@@ -1,0 +1,61 @@
+{% extends "shortener/base.html" %}
+{% block title %}Urls{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Мои URLs</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Полная ссылка</th>
+                    <th>Короткий код ссылки</th>
+                    <th>Дата создания</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for url in urls %}
+                <tr>
+                    <td>{{ url.original_url }}</td>
+                    <td>{{ url.short_code }}</td>
+                    <td>{{ url.created_at }}</td>
+                    <td>
+                        <a href="{% url 'edit_url' url.short_code %}" class="btn btn-warning btn-sm">Редактировать</a>
+                        <a href="{% url 'delete_url' url.short_code %}" class="btn btn-danger btn-sm">Удалить</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No URLs found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if urls.has_other_pages %}
+        <ul class="pagination justify-content-center">
+            {% if urls.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ urls.previous_page_number }}">{{ urls.previous_page_number }}</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">{{ urls.number }} <span class="sr-only">(current)</span></span>
+            </li>
+
+            {% if urls.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ urls.next_page_number }}">{{ urls.next_page_number }}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ urls.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+    </div>
+{% endblock %}
